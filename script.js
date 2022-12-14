@@ -1,14 +1,17 @@
+var buttonEl = $('#Btn')
 
 
-var getUserRepos = function (lat, lon) {
-  var lat = 44.34;
-  var lon = 10.99;
-    var apiUrl = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&appid=9d3d5cb93416cbf527eb8fd87e269c23'
+$(buttonEl).click(function (lat, lon) {
+  event.preventDefault();
+  var cityName =  $('#cityName').val();
+    var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q='+ cityName+'&appid=9d3d5cb93416cbf527eb8fd87e269c23'
     fetch(apiUrl)
       .then(function (response) {
         if (response.ok) {
           response.json().then(function (data) {
             console.log(data);
+            console.log(data.name);
+            displayWeather(data);
           });
         } else {
           alert('Error: ' + response.statusText);
@@ -17,6 +20,13 @@ var getUserRepos = function (lat, lon) {
       .catch(function (error) {
         alert('Unable to connect');
       });
-  };
+  });
 
-  getUserRepos();
+
+  var displayWeather = function (data) {  
+    $('#mainHead').text(data.name);
+    $('#mainTitle').text(data.main.temp);
+    $('#mainBody').text(data.weather[0].description);
+  
+
+  }
