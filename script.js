@@ -4,6 +4,9 @@ var buttonEl = $('#Btn')
 $(buttonEl).click(function (lat, lon) {
   event.preventDefault();
   var cityName =  $('#cityName').val();
+  localStorage.setItem('cityName', cityName);
+  var city = localStorage.getItem('cityName');
+  $('.cities').append(('<h2class="card-header"><button id="Btn">' + city + '</button></h2>'));
     var apiUrl = 'https://api.openweathermap.org/data/2.5/forecast?q='+ cityName+'&appid=9d3d5cb93416cbf527eb8fd87e269c23&units=imperial'
     fetch(apiUrl)
       .then(function (response) {
