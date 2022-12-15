@@ -9,8 +9,6 @@ $(buttonEl).click(function (lat, lon) {
       .then(function (response) {
         if (response.ok) {
           response.json().then(function (data) {
-            console.log(data);
-            console.log(data.name);
             displayWeather(data);
           });
         } else {
@@ -24,18 +22,33 @@ $(buttonEl).click(function (lat, lon) {
 
 
   var displayWeather = function (data) {  
-    $('#mainHead').text(data.city.name + ', ' + data.city.country + ' Today');
-    $('#mainTitle').text(data.list[0].main.temp + " Fahrenheit");
-    $('#mainBody').text(data.list[0].weather[0].description);
-
-
-    // smaLL cards -------------
-    for(var i=1;i<6;i++){
-
-    $('#dayHead'+i).text(data.city.name + ', ' + data.city.country);
+    
+    for(var i=0;i<6;i++){
+      var day = parseInt(dayjs().format('D'));
+      var date = dayjs().format('dddd, MMMM ' + (day +i));
+    $('#dayHead'+i).text(data.city.name + ', ' + data.city.country + ' ' + date);
     $('#dayTitle'+i).text(data.list[i].main.temp + " Fahrenheit");
-    $('#dayBody'+i).text(data.list[i].weather[0].description);
+    $('#dayBodya'+i).text('Wind Spd: ' + data.list[i].wind.speed);
+    $('#dayBodyb'+i).text('Humidity: ' + data.list[i].main.humidity);
+    $('#dayBodyc'+i).text(data.list[i].weather[0].description);
 
+  var id = data.list[i].weather[0].id
+  if(id>=200 && id<300){
+    var url = 'http://openweathermap.org/img/wn/11d@2x.png'
+  } else if (id>=300 && id<400){
+    var url = 'http://openweathermap.org/img/wn/09d@2x.png'
+  } else if (id>=500 && id<600){
+    var url = 'http://openweathermap.org/img/wn/10d@2x.png'
+  } else if (id>=600 && id<700){
+    var url = 'http://openweathermap.org/img/wn/13d@2x.png'
+  } else if (id>=700 && id<800){
+    var url = 'http://openweathermap.org/img/wn/50d@2x.png'
+  } else if (id==800){
+    var url = 'http://openweathermap.org/img/wn/01d@2x.png'
+  } else {
+    var url = 'http://openweathermap.org/img/wn/02d@2x.png'
+  }
+  $('#dayPic'+i).attr('src', url);
+ 
     }
-    // Need to add date, icon, humidity, and wind speed
   }
